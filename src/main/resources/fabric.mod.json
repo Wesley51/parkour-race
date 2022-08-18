@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "parkourrace",
+  "version": "${version}",
+  "name": "Parkour Race",
+  "description": "A Parkour Race made with Plasmid!",
+  "authors": [
+    "WesleyH"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.WesleyH21.parkourrace.ParkourRace"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.9.1",
+    "fabric": "*",
+    "minecraft": "1.16.4",
+    "plasmid": "0.4.x"
+  }
+}
