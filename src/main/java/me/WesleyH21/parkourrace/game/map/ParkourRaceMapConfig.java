@@ -2,16 +2,13 @@ package me.WesleyH21.parkourrace.game.map;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import me.WesleyH21.parkourrace.game.ParkourRaceConfig;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.Identifier;
 
-public class ParkourRaceMapConfig {
+public record ParkourRaceMapConfig(Identifier id) {
     public static final Codec<ParkourRaceMapConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BlockState.CODEC.fieldOf("spawn_block").forGetter(map -> map.spawnBlock)
+            Identifier.CODEC.fieldOf("id").forGetter(ParkourRaceMapConfig::id)
     ).apply(instance, ParkourRaceMapConfig::new));
 
-    public final BlockState spawnBlock;
-
-    public ParkourRaceMapConfig(BlockState spawnBlock) {
-        this.spawnBlock = spawnBlock;
-    }
 }

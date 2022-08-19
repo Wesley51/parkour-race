@@ -125,12 +125,13 @@ public class ParkourRaceActive {
 
     private void spawnParticipant(ServerPlayerEntity player) {
         this.spawnLogic.resetPlayer(player, GameMode.ADVENTURE);
-        this.spawnLogic.spawnPlayer(player);
+        //this.spawnLogic.spawnPlayer(player);
     }
 
     private void spawnSpectator(ServerPlayerEntity player) {
+        player.getInventory().clear();
         this.spawnLogic.resetPlayer(player, GameMode.SPECTATOR);
-        this.spawnLogic.spawnPlayer(player);
+        this.spawnLogic.spawnPlayer(player, world);
     }
 
     private void tick() {

@@ -15,6 +15,8 @@ import xyz.nucleoid.plasmid.game.event.GameActivityEvents;
 import xyz.nucleoid.plasmid.game.event.GamePlayerEvents;
 import xyz.nucleoid.stimuli.event.player.PlayerDeathEvent;
 
+import java.io.IOException;
+
 public class ParkourRaceWaiting {
     private final GameSpace gameSpace;
     private final ParkourRaceMap map;
@@ -33,7 +35,7 @@ public class ParkourRaceWaiting {
     public static GameOpenProcedure open(GameOpenContext<ParkourRaceConfig> context) {
         ParkourRaceConfig config = context.config();
         ParkourRaceMapGenerator generator = new ParkourRaceMapGenerator(config.mapConfig);
-        ParkourRaceMap map = generator.build();
+        ParkourRaceMap map = generator.build(context.server());
 
         RuntimeWorldConfig worldConfig = new RuntimeWorldConfig()
                 .setGenerator(map.asGenerator(context.server()));
@@ -67,6 +69,6 @@ public class ParkourRaceWaiting {
 
     private void spawnPlayer(ServerPlayerEntity player) {
         this.spawnLogic.resetPlayer(player, GameMode.ADVENTURE);
-        this.spawnLogic.spawnPlayer(player);
+        this.spawnLogic.spawnPlayer(player, world);
     }
 }

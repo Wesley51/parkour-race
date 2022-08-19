@@ -11,7 +11,7 @@ public final class ParkourRaceTimerBar {
 
     public ParkourRaceTimerBar(GlobalWidgets widgets) {
         LiteralText title = new LiteralText("Waiting for the game to start...");
-        this.widget = widgets.addBossBar(title, BossBar.Color.GREEN, BossBar.Style.NOTCHED_10);
+        this.widget = widgets.addBossBar(title, BossBar.Color.PURPLE, BossBar.Style.NOTCHED_10);
     }
 
     public void update(long ticksUntilEnd, long totalTicksUntilEnd) {

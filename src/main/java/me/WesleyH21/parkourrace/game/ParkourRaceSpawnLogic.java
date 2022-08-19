@@ -1,6 +1,7 @@
 package me.WesleyH21.parkourrace.game;
 
 import net.minecraft.util.math.Vec3d;
+import xyz.nucleoid.map_templates.BlockBounds;
 import xyz.nucleoid.plasmid.game.GameSpace;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -11,6 +12,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameMode;
 import me.WesleyH21.parkourrace.ParkourRace;
 import me.WesleyH21.parkourrace.game.map.ParkourRaceMap;
+
+import java.util.Random;
 
 public class ParkourRaceSpawnLogic {
     private final GameSpace gameSpace;
@@ -37,17 +40,26 @@ public class ParkourRaceSpawnLogic {
         ));
     }
 
-    public void spawnPlayer(ServerPlayerEntity player) {
-        BlockPos pos = this.map.spawn;
-        if (pos == null) {
-            ParkourRace.LOGGER.error("Cannot spawn player! No spawn is defined in the map!");
-            return;
-        }
+    public void spawnPlayer(ServerPlayerEntity player, ServerWorld world) {
+        spawnPlayer(player, getRandomSpawnPos(player.getRandom()), world);
+    }
 
-        float radius = 4.5f;
-        float x = pos.getX() + MathHelper.nextFloat(player.getRandom(), -radius, radius);
-        float z = pos.getZ() + MathHelper.nextFloat(player.getRandom(), -radius, radius);
+    public void spawnPlayer(ServerPlayerEntity player, Vec3d pos, ServerWorld world) {
+        player.teleport(world, pos.getX(), pos.getY(), pos.getZ(), 0.0F, 0.0F);
+        player.setOnGround(true);
+    }
+    public Vec3d getRandomSpawnPos(Random random) {
+        return choosePos(random, map.getSpawn(random), 0);
+    }
 
-        player.teleport(this.world, x, pos.getY(), z, 0.0F, 0.0F);
+    public static Vec3d choosePos(Random random, BlockBounds bounds, float aboveGround) {
+        BlockPos min = bounds.min();
+        BlockPos max = bounds.max();
+
+        double x = MathHelper.nextDouble(random, min.getX(), max.getX());
+        double z = MathHelper.nextDouble(random, min.getZ(), max.getZ());
+        double y = min.getY() + aboveGround;
+
+        return new Vec3d(x + 0.5, y, z + 0.5);
     }
 }

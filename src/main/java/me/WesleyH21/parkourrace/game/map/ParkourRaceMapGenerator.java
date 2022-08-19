@@ -1,7 +1,14 @@
 package me.WesleyH21.parkourrace.game.map;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.LiteralText;
 import xyz.nucleoid.map_templates.MapTemplate;
 import net.minecraft.util.math.BlockPos;
+import xyz.nucleoid.map_templates.MapTemplateSerializer;
+import xyz.nucleoid.plasmid.game.GameOpenException;
+
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class ParkourRaceMapGenerator {
 
@@ -11,22 +18,17 @@ public class ParkourRaceMapGenerator {
         this.config = config;
     }
 
-    public ParkourRaceMap build() {
-        MapTemplate template = MapTemplate.createEmpty();
-        ParkourRaceMap map = new ParkourRaceMap(template, this.config);
+    public ParkourRaceMap build(MinecraftServer server) throws GameOpenException {
+        try {
+            var template = MapTemplateSerializer.loadFromResource(server, this.config.id());
+            ParkourRaceMap map = new ParkourRaceMap(template, this.config);
+            map.waitingSpawns = template.getMetadata().getRegionBounds("waiting_spawn").collect(Collectors.toList());
 
-        this.buildSpawn(template);
-        map.spawn = new BlockPos(0,65,0);
-
-        return map;
-    }
-
-    private void buildSpawn(MapTemplate builder) {
-        BlockPos min = new BlockPos(-5, 64, -5);
-        BlockPos max = new BlockPos(5, 64, 5);
-
-        for (BlockPos pos : BlockPos.iterate(min, max)) {
-            builder.setBlockState(pos, this.config.spawnBlock);
+            return map;
+        }catch (IOException e){
+            throw new GameOpenException(new LiteralText("Failed to load map"));
         }
+
     }
+
 }
