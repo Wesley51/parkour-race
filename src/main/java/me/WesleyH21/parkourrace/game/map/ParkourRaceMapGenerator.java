@@ -23,6 +23,7 @@ public class ParkourRaceMapGenerator {
             var template = MapTemplateSerializer.loadFromResource(server, this.config.id());
             ParkourRaceMap map = new ParkourRaceMap(template, this.config);
             map.waitingSpawns = template.getMetadata().getRegionBounds("waiting_spawn").collect(Collectors.toList());
+            map.checkpoints = template.getMetadata().getRegionBounds("checkpoint").collect(Collectors.toList());
 
             return map;
         }catch (IOException e){

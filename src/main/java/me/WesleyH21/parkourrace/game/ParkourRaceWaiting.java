@@ -29,6 +29,7 @@ public class ParkourRaceWaiting {
         this.map = map;
         this.config = config;
         this.world = world;
+        world.setTimeOfDay(13000);
         this.spawnLogic = new ParkourRaceSpawnLogic(gameSpace, world, map);
     }
 
@@ -36,7 +37,6 @@ public class ParkourRaceWaiting {
         ParkourRaceConfig config = context.config();
         ParkourRaceMapGenerator generator = new ParkourRaceMapGenerator(config.mapConfig);
         ParkourRaceMap map = generator.build(context.server());
-
         RuntimeWorldConfig worldConfig = new RuntimeWorldConfig()
                 .setGenerator(map.asGenerator(context.server()));
 
@@ -50,6 +50,7 @@ public class ParkourRaceWaiting {
             game.listen(GamePlayerEvents.OFFER, (offer) -> offer.accept(world, Vec3d.ZERO));
             game.listen(PlayerDeathEvent.EVENT, waiting::onPlayerDeath);
         });
+
     }
 
     private GameResult requestStart() {
